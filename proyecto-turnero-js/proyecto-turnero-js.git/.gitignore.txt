@@ -1,0 +1,32 @@
+../.gitconfig
+../.lesshst
+../.viminfo
+../.vscode/
+../AppData/
+../Contacts/
+../Curso testing/
+../Downloads/
+../Favorites/
+../Links/
+../Music/
+../NTUSER.DAT
+../NTUSER.DAT{dbf59649-5b5f-11ee-a0f4-00d49eccc41d}.TM.blf
+../NTUSER.DAT{dbf59649-5b5f-11ee-a0f4-00d49eccc41d}.TMContainer00000000000000000001.regtrans-ms
+../NTUSER.DAT{dbf59649-5b5f-11ee-a0f4-00d49eccc41d}.TMContainer00000000000000000002.regtrans-ms
+../OneDrive/
+../Proyeecto1-js/
+../Saved Games/
+../Searches/
+../SteamSetup.exe
+../Videos/
+../Zomboid/
+../bitdefender_windows_1faf651f-6226-4dc4-9d0d-eece23b74282.exe
+../ccsetup624.exe
+../coderhouse/
+../node-v20.11.1-x64.msi
+../ntuser.dat.LOG1
+../ntuser.dat.LOG2
+../ntuser.ini
+../proyecto-js-2-gestor-tareas/
+../proyecto-turnero/
+../repo-proyecto-coder-1/

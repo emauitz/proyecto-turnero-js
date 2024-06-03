@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/styles.css">
+    <script defer src="./js/index.js"></script>
+    <title>Turnos-agenda</title>
+</head>
+<body>
+    <section class="formulario__agenda">
+        <div class="row text-center">
+            <h2 class="titulo__seccion">Contacto-Solicitar turno</h2>
+            <div class="">
+                <p class="formulario__agenda-descripcion">Comunicate para reservar fecha y horario o para realizar consultas, estamos a disposicion.</p>
+
+                <form id="formularioAgenda" class="formulario__agenda-form">
+                    <label for="nombreApellido">Nombre y Apellido</label>
+                        <input id="nombreApellido" name="nombreApellido" type="text">
+                    
+                    <label for="correo">Correo</label>
+                        <input id="correo" name="correo" type="email">
+                    <label for="mensaje">Mensaje</label>
+                        <textarea id="mensaje" name="mensaje" rows="3" placeholder="Escribe tu mensaje"></textarea>
+                    <label for="fecha-datepicker">Selecciona una fecha</label>
+                        <input id="fecha-datepicker" name="fecha" type="date" placeholder="dd/mm/aaaa">
+
+                        <label for="hora">Selecciona una hora</label>
+                    <input id="hora" name="hora" type="time">
+                    
+                    <button type="submit">Enviar</button>
+
+                    <div id="errores" style="color: red;"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
