@@ -1,6 +1,7 @@
 
-.formulario__agenda {
+.formulario_turnos {
     background-color: cadetblue;
+    color: black;
     border-radius: 15px;
     border: 2px black solid;
     padding: 5vh;

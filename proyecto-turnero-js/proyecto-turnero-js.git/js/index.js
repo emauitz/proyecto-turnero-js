@@ -1,78 +1,92 @@
+// hay un problema con el codigo, ya que no carga el html y css hasta que no realizo la carga de una reserva
 
-//verifica que el DOM este cargado correctamnte - esto lo saque de videos tutoriales, no se si es correcto escribirlo aca
 
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('formularioAgenda').addEventListener('submit', function(event) {
-        event.preventDefault();
+// Array para almacenar las reservas
+const reservas = [];
 
-        // array que guarda los datos de los formularios enviados
-        var formularios = [];
+// Función para validar el nombre y apellido (solo letras y espacios)
+function validarNombreApellido(nombreApellido) {
+    const regex = /^[a-zA-Z\s]+$/;
+    return regex.test(nombreApellido);
+}
 
-        // obtiene los valores cargados en el formulario
-        var nombreApellido = document.getElementById('nombreApellido').value.trim();
-        var correo = document.getElementById('correo').value.trim();
-        var mensaje = document.getElementById('mensaje').value.trim();
-        var fecha = document.getElementById('fecha-datepicker').value.trim();
-        var hora = document.getElementById('hora').value.trim();
+// Función para validar el email
+function validarEmail(email) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+}
 
-        
-        // valida los campos del formulario antes de enviar
-        var camposIncorrectos = [];
-        if (!nombreApellido) {
-            camposIncorrectos.push('Nombre y Apellido');
+function tomarDato(mensaje, validarFunc, mensajeError) {
+    let dato;
+    do {
+        dato = prompt(mensaje);
+        if (dato && validarFunc(dato)) {
+            return dato;
+        } else {
+            alert(mensajeError);
+            console.log(mensajeError);
         }
-        if (!correo || !validateEmail(correo)) {
-            camposIncorrectos.push('Correo');
+    } while (true);
+}
+
+// Función para tomar los datos de la reserva
+function tomarDatosReserva() {
+    // Tomar y validar nombre y apellido
+    const nombreApellido = tomarDato("Ingrese su nombre y apellido:", validarNombreApellido, "Debe ingresar un nombre y apellido válidos (solo letras y espacios).");
+
+    // Tomar y validar email
+    const email = tomarDato("Ingrese su email:", validarEmail, "Debe ingresar un email válido.");
+
+    // NO ENTENDI COMO VALIDAR FECHA Y HORARIO por eso me falta, como puedo hacer para que solo permita realizar reservas en fechas posteriores a la fecha en la que se realiza la carga de datos?
+    const fecha = prompt("Ingrese la fecha de la reserva (formato: DD-MM-AAAA):");
+    const horario = prompt("Ingrese el horario de la reserva (formato: HH:MM):");
+
+    // Tomar comentarios
+    const comentarios = prompt("Ingrese sus comentarios:");
+
+    // Crear un array de reserva
+    const reserva = [nombreApellido, email, fecha, horario, comentarios];
+    // suma la reserva al array
+    reservas.push(reserva);
+
+    // Confirmar la reserva
+    const mensajeReserva = "Reserva realizada con éxito:\n" +
+        "Nombre y Apellido: " + reserva[0] + "\n" +
+        "Email: " + reserva[1] + "\n" +
+        "Fecha: " + reserva[2] + "\n" +
+        "Horario: " + reserva[3] + "\n" +
+        "Comentarios: " + (reserva[4] ? reserva[4] : "Ninguno");
+
+    alert(mensajeReserva);
+    console.log(mensajeReserva);
+}
+
+// Función para mostrar todas las reservas
+function mostrarReservas() {
+    if (reservas.length === 0) {
+        const mensajeNoReservas = "No hay reservas para mostrar.";
+        alert(mensajeNoReservas);
+        console.log(mensajeNoReservas);
+    } else {
+        let mensaje = "Reservas realizadas:\n";
+        for (let i = 0; i < reservas.length; i++) {
+            const reserva = reservas[i];
+            mensaje += (i + 1) + ". " + reserva[0] + " - " +
+                reserva[1] + " - " +
+                reserva[2] + " - " +
+                reserva[3] + " - " +
+                (reserva[4] ? reserva[4] : "Ninguno") + "\n";
         }
-        if (!mensaje) {
-            camposIncorrectos.push('Mensaje');
-        }
-        if (!fecha) {
-            camposIncorrectos.push('Fecha');
-        }
-        if (!hora) {
-            camposIncorrectos.push('Hora');
-        }
-
-        // mensaje de alerta si algun campos no se completo o se completo incorrectamente
-        if (camposIncorrectos.length > 0) {
-            var mensajeAlerta = 'Por favor, complete los siguientes campos de manera correcta:\n';
-            camposIncorrectos.forEach(function(campo) {
-                mensajeAlerta += '- ' + campo + '\n';
-            });
-            alert(mensajeAlerta);
-            return;
-        }
-
-        // muestra en consola los datos enviados
-        console.log('Nombre y Apellido:', nombreApellido);
-        console.log('Correo:', correo);
-        console.log('Mensaje:', mensaje);
-        console.log('Fecha:', fecha);
-        console.log('Hora:', hora)
-
-        // confirma el envio de los datos
-        alert('La informacion fue enviada exitosamente, te confirmaremos la reserva a la brevedad');
-    });
-
-    // toma los datos cargados en el formulario y los agrega a array formularios -- tengo un error "Uncaught ReferenceError: fecha is not defined
-    // at HTMLDocument.<anonymous> (index.js:63:16)"--- no se como resolverlo
-    var formData = {
-        nombreApellido: nombreApellido,
-        correo: correo,
-        mensaje: mensaje,
-        fecha: fecha,
-        hora: hora
-    };
-
-    formularios.push(formData);
-
-    console.log('Formulario enviado:', formData);
-    console.log('Todos los formularios enviados:', formularios);
-
-    // esto valida que el formato del email sea el correcto - tiene un error - verificar
-    function validateEmail(email) {
-        const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-        return re.test(email);
+        alert(mensaje);
+        console.log(mensaje);
     }
-});
+}
+
+// permite realizar varias reservas - Commo puedo cambiar las opciones del mensaje "¿Desea realizar otra reserva?" para que no sean "OK/CANCEL" sino "SI/NO" ??
+let continuar = true;
+while (continuar) {
+    tomarDatosReserva();
+    continuar = confirm("¿Desea realizar otra reserva?");
+}
+
+mostrarReservas();
