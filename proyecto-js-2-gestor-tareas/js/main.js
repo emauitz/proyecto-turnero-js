@@ -1,10 +1,12 @@
 /*gestion de usuario en login y creacion de nuevo usuario*/
-//Gestion de usuarios pendiente
+//Gestion de usuarios pendiente para ultima entrega
 
-//constantes y variables
+// Constantes y variables
 const fecha = document.querySelector('#fecha');
 const lista = document.querySelector('#lista');
 const input = document.querySelector('#input');
+const fechaLimiteInput = document.getElementById("date");
+const tipoTareaInput = document.getElementById("desplegable");
 const botonEnter = document.querySelector('#boton-enter');
 const aviso = document.querySelector('#aviso');
 const check = 'fa-check-circle';
@@ -17,8 +19,9 @@ let LIST = [];
 const FECHA = new Date();
 fecha.innerHTML = FECHA.toLocaleDateString('es-AR', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
 
+
 // Función agregar tarea
-function agregarTarea(tarea, id, realizado, eliminado) {
+function agregarTarea(tarea, id, fechaLimite, tipoTarea, realizado, eliminado) {
     if (eliminado) { return; }
     const REALIZADO = realizado ? check : uncheck;
     const LINE = realizado ? lineThrough : '';
@@ -26,14 +29,13 @@ function agregarTarea(tarea, id, realizado, eliminado) {
         <li class="elemento" id="elemento_${id}">
             <i class="far ${REALIZADO} co" data="realizado" id="${id}"></i>
             <p class="text ${LINE}">${tarea}</p>
+            <p class="fecha-limite">${fechaLimite}</p>
+            <p class="tipo-tarea">${tipoTarea.charAt(0).toUpperCase() + tipoTarea.slice(1)}</p>
             <i class="fas fa-trash de" data="eliminado" id="${id}"></i>
         </li>
     `;
     lista.insertAdjacentHTML("beforeend", elemento);
 }
-
-//falta que se verifiquen que todos los input tengas datos cargados
-//---------------HACER ANTES DE ENTREGAR---------------------
 
 // Función tarea realizada
 function tareaRealizada(element) {
@@ -60,20 +62,33 @@ function tareaEliminada(element) {
     }
 }
 
-// Escucha el botón para agregar una nueva tarea
+// Escucha el botón del mouse para agregar una nueva tarea
 botonEnter.addEventListener('click', () => {
     const tarea = input.value;
-    if (tarea) {
-        agregarTarea(tarea, id, false, false);
+    const fechaLimite = fechaLimiteInput.value;
+    const tipoTarea = tipoTareaInput.value;
+
+    if (tarea && fechaLimite && tipoTarea) {
+        agregarTarea(tarea, id, fechaLimite, tipoTarea, false, false);
         LIST.push({
             nombre: tarea,
             id: id,
+            fechaLimite: fechaLimite,
+            tipoTarea: tipoTarea,
             realizado: false,
             eliminado: false
         });
         localStorage.setItem('TODO', JSON.stringify(LIST));
         input.value = '';
+        fechaLimiteInput.value = '';
+        tipoTareaInput.value = '';
         id++;
+    } else {
+        aviso.textContent = 'Por favor, completa todos los campos.';
+        aviso.classList.remove('oculto');
+        setTimeout(() => {
+            aviso.classList.add('oculto');
+        }, 3000);
     }
 });
 
@@ -81,17 +96,30 @@ botonEnter.addEventListener('click', () => {
 document.addEventListener('keyup', function(event) {
     if (event.key === 'Enter') {
         const tarea = input.value;
-        if (tarea) {
-            agregarTarea(tarea, id, false, false);
+        const fechaLimite = fechaLimiteInput.value;
+        const tipoTarea = tipoTareaInput.value;
+
+        if (tarea && fechaLimite && tipoTarea) {
+            agregarTarea(tarea, id, fechaLimite, tipoTarea, false, false);
             LIST.push({
                 nombre: tarea,
                 id: id,
+                fechaLimite: fechaLimite,
+                tipoTarea: tipoTarea,
                 realizado: false,
                 eliminado: false
             });
             localStorage.setItem('TODO', JSON.stringify(LIST));
             input.value = '';
+            fechaLimiteInput.value = '';
+            tipoTareaInput.value = '';
             id++;
+        } else {
+            aviso.textContent = 'Por favor, completa todos los campos.';
+            aviso.classList.remove('oculto');
+            setTimeout(() => {
+                aviso.classList.add('oculto');
+            }, 3000);
         }
     }
 });
@@ -120,6 +148,6 @@ if (data) {
 
 function cargarLista(DATA) {
     DATA.forEach(function(i) {
-        agregarTarea(i.nombre, i.id, i.realizado, i.eliminado);
+        agregarTarea(i.nombre, i.id, i.fechaLimite, i.tipoTarea, i.realizado, i.eliminado);
     });
 }
